@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+
+<style>
+body{margin:0;padding:0;font-family:Arial;background:#eef3f8;display:flex;justify-content:center;align-items:center;height:100vh;}
+.box{width:330px;background:#fff;padding:25px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,.2);}
+input{width:100%;padding:10px;margin:8px 0;border-radius:5px;border:1px solid #aaa;}
+button{width:100%;padding:10px;background:#007bff;border:none;color:white;border-radius:5px;margin-top:10px;cursor:pointer;}
+button:hover{background:#0056b3;}
+a{display:block;margin-top:10px;text-align:center;color:#007bff;text-decoration:none;}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2 style="text-align:center;">Login</h2>
+
+    <input type="email" id="email" placeholder="Enter Email">
+    <input type="password" id="password" placeholder="Enter Password">
+
+    <button id="loginBtn">Login</button>
+
+    <a href="forget.html">Forgot Password?</a>
+    <a href="signup.html">Create New Account</a>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyB2s4mD06y3UtZ-6xGWclkQ90OSZeMh0Fo",
+    authDomain: "brandmybottle-1d9d7.firebaseapp.com",
+    projectId: "brandmybottle-1d9d7",
+    storageBucket: "brandmybottle-1d9d7.firebasestorage.app",
+    messagingSenderId: "391458391015",
+    appId: "1:391458391015:web:7f94c96146856140a27342",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+document.getElementById("loginBtn").addEventListener("click", () => {
+    let email = document.getElementById("email").value;
+    let pass  = document.getElementById("password").value;
+
+    if (!email || !pass) return alert("Enter all details!");
+
+    signInWithEmailAndPassword(auth, email, pass)
+    .then(() => {
+        alert("Login successful!");
+        window.location.href = "index.js";
+    })
+    .catch(err => alert(err.message));
+});
+</script>
+
+</body>
+</html>

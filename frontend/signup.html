@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signup</title>
+
+  <style>
+    :root{
+      --bg:#08131f;
+      --accent:#00d1ff;
+      --accent-2:#57ffca;
+      --muted:#a6b4c3;
+    }
+    body{
+      margin:0;font-family:"Inter",sans-serif;background:var(--bg);color:#eaf4f9;
+      display:flex;align-items:center;justify-content:center;height:100vh;
+    }
+    .card{
+      background:rgba(255,255,255,0.05);padding:40px;border-radius:16px;
+      box-shadow:0 0 20px rgba(0,0,0,0.5);width:100%;max-width:400px;text-align:center;
+    }
+    h2{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      -webkit-background-clip:text;color:transparent;margin-bottom:20px;
+    }
+    input{
+      width:100%;padding:12px;margin:10px 0;border-radius:10px;border:none;
+      background:rgba(255,255,255,0.1);color:#eaf4f9;
+    }
+    input::placeholder{color:var(--muted);}
+    button{
+      width:100%;padding:12px;margin-top:10px;border:none;border-radius:12px;font-weight:700;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#042427;cursor:pointer;
+      transition:0.2s;
+    }
+    button:hover{transform:scale(1.05);}
+    .google-btn{
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      background:rgba(255,255,255,0.1);color:#eaf4f9;margin-top:12px;
+    }
+    .google-btn img{width:20px;}
+    .link{margin-top:14px;color:var(--muted);}
+    .link a{color:var(--accent-2);text-decoration:none;font-weight:600;}
+    .link a:hover{text-decoration:underline;}
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2 style="text-align:center;">Create Account</h2>
+
+    <input type="email" id="email" placeholder="Enter Email">
+    <input type="password" id="password" placeholder="Create Password">
+
+    <button id="signupBtn">Sign Up</button>
+
+</div>
+
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyB2s4mD06y3UtZ-6xGWclkQ90OSZeMh0Fo",
+    authDomain: "brandmybottle-1d9d7.firebaseapp.com",
+    projectId: "brandmybottle-1d9d7",
+    storageBucket: "brandmybottle-1d9d7.firebasestorage.app",
+    messagingSenderId: "391458391015",
+    appId: "1:391458391015:web:7f94c96146856140a27342",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+document.getElementById("signupBtn").addEventListener("click", () => {
+    let email = document.getElementById("email").value;
+    let pass  = document.getElementById("password").value;
+
+    if (!email || !pass) return alert("Fill all fields!");
+
+    createUserWithEmailAndPassword(auth, email, pass)
+    .then(() => {
+        alert("Account created successfully!");
+        window.location.href = "login.html";
+    })
+    .catch(err => alert(err.message));
+});
+</script>
+
+</body>
+</html>
