@@ -1,22 +1,23 @@
 require("dotenv").config();
-
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const axios = require("axios");
 
 const { HoldingsModel } = require("./model/HoldingsModel");
-
 const { PositionsModel } = require("./model/PositionsModel");
 const { OrdersModel } = require("./model/OrdersModel");
+const { Auth } = require("./schemas/Auth")
 
 const PORT = process.env.PORT || 3002;
 const uri = process.env.MONGO_URL;
 
 const app = express();
-
 app.use(cors());
 app.use(bodyParser.json());
+
+const FIREBASE_API_KEY = process.env.FIREBASE_API_KEY;
 
 // app.get("/addHoldings", async (req, res) => {
 //   let tempHoldings = [
@@ -209,6 +210,52 @@ app.post("/newOrder", async (req, res) => {
 
   res.send("Order saved!");
 });
+
+app.post("/signup", async (req, res) => {
+  const { email, password } = req.body;
+
+  // console.log(email);
+  // console.log(password);
+
+
+  if (!email || !password)
+    return res.status(400).json({ message: "Email and password are required" });
+
+  try {
+    // Firebase Auth REST API URL
+    const firebaseURL =
+      `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${FIREBASE_API_KEY}`;
+
+    // Call Firebase
+    const response = await axios.post(firebaseURL, {
+      email,
+      password,
+      returnSecureToken: true,
+    });
+
+    console.log(response.config.data);
+
+    return res.status(201).json({
+      message: "User created successfully",
+      uid: response.data.localId,
+      token: response.data.idToken,
+    });
+  } catch (err) {
+    const error = err.response?.data?.error?.message;
+
+    if (error === "EMAIL_EXISTS") {
+      return res.status(200).json({
+        message: "Email already exists, please login instead",
+      });
+    }
+
+    return res.status(400).json({
+      message: "Firebase signup failed",
+      error,
+    });
+  }
+});
+
 
 app.listen(PORT, () => {
   console.log("App started!");

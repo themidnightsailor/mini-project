@@ -7,7 +7,7 @@ function Navbar() {
       style={{ backgroundColor: "#FFF" }}
     >
       <div class="container p-2">
-        <Link class="navbar-brand" to={"/"}>
+        <Link class="navbar-brand" to={"/home"}>
           <img
             src="media/images/oo.png"
             style={{ width: "25%" }}
@@ -28,11 +28,11 @@ function Navbar() {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <form class="d-flex" role="search">
             <ul class="navbar-nav mb-lg-0">
-              <li class="nav-item">
+              {/* <li class="nav-item">
                 <Link class="nav-link active" aria-current="page" to={"/signup"}>
                   Signup
                 </Link>
-              </li>
+              </li> */}
               <li class="nav-item">
                 <Link class="nav-link active" to={"/about"}>
                   About
